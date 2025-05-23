@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Racism Reporting Survey</title>
+    <style>
+        body { font-family: Arial; max-width: 700px; margin: auto; padding: 20px; }
+        label { display: block; margin-top: 15px; }
+        input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Racism Reporting Survey</h2>
+    <form id="survey-form">
+        
+            <label for="ref">Contact Number:</label>
+            
+                <input type="text" name="ref" id="ref">
+            
+        
+            <label for="incident_date">1. Date of incident</label>
+            
+                <input type="date" name="incident_date" id="incident_date">
+            
+        
+            <label for="incident_time">2. Time of incident</label>
+            
+                <input type="time" name="incident_time" id="incident_time">
+            
+        
+            <label for="indigenous_group">5. Do you identify as part of an Indigenous group? If other, please specify:</label>
+            
+                <input type="text" name="indigenous_group" id="indigenous_group">
+            
+        
+            <label for="incident_address">7. Location of incident (please specify address or description):</label>
+            
+                <input type="text" name="incident_address" id="incident_address">
+            
+        
+            <label for="report_details">If yes, please specify:</label>
+            
+                <input type="text" name="report_details" id="report_details">
+            
+        
+            <label for="incident_details">10. Can you please provide the details of the incident, in your own words?</label>
+            
+                <input type="text" name="incident_details" id="incident_details">
+            
+        
+        <button type="submit">Submit</button>
+    </form>
+    <p id="response-message"></p>
+
+    <script>
+        const form = document.getElementById("survey-form");
+        const message = document.getElementById("response-message");
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const payload = {};
+            for (let [key, value] of formData.entries()) {
+                payload[key] = value;
+            }
+            const response = await fetch("https://survey211.azurewebsites.net/api/savesurvey", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            const text = await response.text();
+            message.innerText = text;
+            form.reset();
+        };
+    </script>
+</body>
+</html>
