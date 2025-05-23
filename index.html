@@ -1,78 +1,155 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Racism Reporting Survey</title>
-    <style>
-        body { font-family: Arial; max-width: 700px; margin: auto; padding: 20px; }
-        label { display: block; margin-top: 15px; }
-        input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
-        button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Racism Reporting Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: auto; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+    .multi-select { height: 100px; }
+    button { margin-top: 20px; padding: 10px 20px; }
+  </style>
 </head>
 <body>
-    <h2>Racism Reporting Survey</h2>
-    <form id="survey-form">
-        
-            <label for="ref">Contact Number:</label>
-            
-                <input type="text" name="ref" id="ref">
-            
-        
-            <label for="incident_date">1. Date of incident</label>
-            
-                <input type="date" name="incident_date" id="incident_date">
-            
-        
-            <label for="incident_time">2. Time of incident</label>
-            
-                <input type="time" name="incident_time" id="incident_time">
-            
-        
-            <label for="indigenous_group">5. Do you identify as part of an Indigenous group? If other, please specify:</label>
-            
-                <input type="text" name="indigenous_group" id="indigenous_group">
-            
-        
-            <label for="incident_address">7. Location of incident (please specify address or description):</label>
-            
-                <input type="text" name="incident_address" id="incident_address">
-            
-        
-            <label for="report_details">If yes, please specify:</label>
-            
-                <input type="text" name="report_details" id="report_details">
-            
-        
-            <label for="incident_details">10. Can you please provide the details of the incident, in your own words?</label>
-            
-                <input type="text" name="incident_details" id="incident_details">
-            
-        
-        <button type="submit">Submit</button>
-    </form>
-    <p id="response-message"></p>
+  <h1>Racism Reporting Form</h1>
+  <form id="surveyForm">
+    <label>Contact Number:
+      <input type="text" name="ref" />
+    </label>
+    <label>Date of incident:
+      <input type="date" name="incident_date" />
+    </label>
+    <label>Time of incident:
+      <input type="time" name="incident_time" />
+    </label>
+    <label>Where did this incident take place?
+      <input type="text" name="incident_location" />
+    </label>
+    <label>Racial/Ethnic background:
+      <select name="racial_background">
+        <option value="">--Select--</option>
+        <option value="east_asian">East Asian</option>
+        <option value="southeast_asian">Southeast Asian</option>
+        <option value="mena">Middle Eastern or North African</option>
+        <option value="latinx">Latin American or Hispanic</option>
+        <option value="white">White</option>
+        <option value="mixed">Mixed</option>
+        <option value="prefer_not_say">Prefer not to say</option>
+      </select>
+    </label>
+    <label>Indigenous group (specify):
+      <input type="text" name="indigenous_group" />
+    </label>
+    <label>Additional identities:
+      <select name="additional_identities" multiple class="multi-select">
+        <option value="lgbtq2s">LGBTQ2S+</option>
+        <option value="newcomer">Newcomer</option>
+        <option value="disability">Disability</option>
+        <option value="none">None of the above</option>
+      </select>
+    </label>
+    <label>Incident address/description:
+      <input type="text" name="incident_address" />
+    </label>
+    <label>Type of discrimination:
+      <select name="discrimination_type" multiple class="multi-select">
+        <option value="verbal">Verbal</option>
+        <option value="physical">Physical</option>
+        <option value="employment">Employment</option>
+        <option value="housing">Housing</option>
+        <option value="profiling">Racial Profiling</option>
+        <option value="service_denial">Service Denial</option>
+        <option value="hate_speech">Hate Speech</option>
+        <option value="vandalism">Vandalism</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+    <label>Reported elsewhere:
+      <select name="reported_elsewhere">
+        <option value="">--Select--</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </label>
+    <label>If yes, specify:
+      <textarea name="report_details"></textarea>
+    </label>
+    <label>Incident details:
+      <textarea name="incident_details"></textarea>
+    </label>
+    <label>Follow up:
+      <select name="follow_up">
+        <option value="">--Select--</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </label>
+    <label>Impact:
+      <select name="impact" multiple class="multi-select">
+        <option value="emotional">Emotional distress</option>
+        <option value="fear">Fear for safety</option>
+        <option value="job_loss">Loss of income</option>
+        <option value="housing_services">Housing/service access</option>
+        <option value="legal">Legal concerns</option>
+      </select>
+    </label>
+    <label>Support needed:
+      <select name="support_type" multiple class="multi-select">
+        <option value="mental_health">Mental health</option>
+        <option value="legal_aid">Legal aid</option>
+        <option value="advocacy">Advocacy</option>
+        <option value="employment_help">Employment help</option>
+        <option value="no_support">No support needed</option>
+      </select>
+    </label>
+    <label>Resource summary:
+      <select name="resource_summary">
+        <option value="">--Select--</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </label>
+    <label>Consent:
+      <select name="consent">
+        <option value="">--Select--</option>
+        <option value="report_only">Report only</option>
+        <option value="refer_only">Refer only</option>
+        <option value="no_use">No use</option>
+      </select>
+    </label>
+    <button type="submit">Submit</button>
+  </form>
+  <p id="status"></p>
+  <script>
+    const form = document.getElementById('surveyForm');
+    const statusText = document.getElementById('status');
 
-    <script>
-        const form = document.getElementById("survey-form");
-        const message = document.getElementById("response-message");
-        form.onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const payload = {};
-            for (let [key, value] of formData.entries()) {
-                payload[key] = value;
-            }
-            const response = await fetch("https://survey211.azurewebsites.net/api/savesurvey", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-            const text = await response.text();
-            message.innerText = text;
-            form.reset();
-        };
-    </script>
+    form.onsubmit = async function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = {};
+      for (const [key, value] of formData.entries()) {
+        if (data[key]) {
+          data[key] += `,${value}`;
+        } else {
+          data[key] = value;
+        }
+      }
+
+      try {
+        const res = await fetch("https://survey211.azurewebsites.net/api/savesurvey", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        const text = await res.text();
+        statusText.innerText = text;
+      } catch (err) {
+        statusText.innerText = "Failed to submit: " + err;
+      }
+    };
+  </script>
 </body>
 </html>
