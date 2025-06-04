@@ -3,90 +3,194 @@
 <head>
   <meta charset="UTF-8">
   <title>Racism Reporting Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f8fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      background-color: white;
+      margin: 40px auto;
+      padding: 30px 40px;
+      border-radius: 10px;
+      max-width: 800px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .logo {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 120px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2b4c6f;
+      margin-bottom: 40px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 20px 0 10px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 80px;
+    }
+
+    .options {
+      margin-left: 20px;
+    }
+
+    button {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 24px;
+      font-size: 16px;
+      color: white;
+      background-color: #2b4c6f;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3e618c;
+    }
+  </style>
 </head>
 <body>
-  <h1>Racism Reporting Form</h1>
-  <form id="reportForm">
-    <label>1. Date of incident: <input type="date" name="incident_date"></label><br><br>
-    <label>2. Time of incident: <input type="time" name="incident_time"></label><br><br>
+  <div class="container">
+    <img class="logo" src="https://211ontario.ca/wp-content/uploads/2020/07/211_Logo_EN_Color.png" alt="Ontario 211 Logo">
+    <h1>Racism Reporting Form</h1>
+    <form id="reportForm">
+      <label>1. Date of incident:
+        <input type="date" name="incident_date">
+      </label>
 
-    <label>3. Where did this incident take place?</label><br>
-    <input type="checkbox" name="incident_location" value="school"> School<br>
-    <input type="checkbox" name="incident_location" value="work"> Work<br>
-    <input type="checkbox" name="incident_location" value="public_space"> Public Space<br>
-    <input type="checkbox" name="incident_location" value="online"> Online<br><br>
+      <label>2. Time of incident:
+        <input type="time" name="incident_time">
+      </label>
 
-    <label>4. How do you identify your racial or ethnic background?</label><br>
-    <input type="checkbox" name="racial_background" value="east_asian"> East Asian<br>
-    <input type="checkbox" name="racial_background" value="southeast_asian"> Southeast Asian<br>
-    <input type="checkbox" name="racial_background" value="mena"> Middle Eastern or North African<br>
-    <input type="checkbox" name="racial_background" value="latinx"> Latin American or Hispanic<br>
-    <input type="checkbox" name="racial_background" value="white"> White (European descent)<br>
-    <input type="checkbox" name="racial_background" value="mixed"> Mixed race or Multiracial<br>
-    <input type="checkbox" name="racial_background" value="prefer_not_say"> Prefer not to say<br><br>
+      <label>3. Where did this incident take place?</label>
+      <div class="options">
+        <input type="checkbox" name="incident_location" value="school"> School<br>
+        <input type="checkbox" name="incident_location" value="work"> Work<br>
+        <input type="checkbox" name="incident_location" value="public_space"> Public Space<br>
+        <input type="checkbox" name="incident_location" value="online"> Online
+      </div>
 
-    <label>5. Do you identify as part of an Indigenous group? If other, please specify:</label><br>
-    <input type="text" name="indigenous_group"><br><br>
+      <label>4. How do you identify your racial or ethnic background?</label>
+      <div class="options">
+        <input type="checkbox" name="racial_background" value="east_asian"> East Asian<br>
+        <input type="checkbox" name="racial_background" value="southeast_asian"> Southeast Asian<br>
+        <input type="checkbox" name="racial_background" value="mena"> Middle Eastern or North African<br>
+        <input type="checkbox" name="racial_background" value="latinx"> Latin American or Hispanic<br>
+        <input type="checkbox" name="racial_background" value="white"> White (European descent)<br>
+        <input type="checkbox" name="racial_background" value="mixed"> Mixed race or Multiracial<br>
+        <input type="checkbox" name="racial_background" value="prefer_not_say"> Prefer not to say
+      </div>
 
-    <label>6. Do you identify as part of any of the following groups?</label><br>
-    <input type="checkbox" name="additional_identities" value="lgbtq2s"> LGBTQ2S+<br>
-    <input type="checkbox" name="additional_identities" value="newcomer"> Newcomer or immigrant<br>
-    <input type="checkbox" name="additional_identities" value="disability"> Person with a disability<br>
-    <input type="checkbox" name="additional_identities" value="none"> None of the above<br><br>
+      <label>5. Do you identify as part of an Indigenous group? If other, please specify:</label>
+      <input type="text" name="indigenous_group">
 
-    <label>7. Location of incident (please specify address or description):</label><br>
-    <textarea name="incident_address"></textarea><br><br>
+      <label>6. Do you identify as part of any of the following groups?</label>
+      <div class="options">
+        <input type="checkbox" name="additional_identities" value="lgbtq2s"> LGBTQ2S+<br>
+        <input type="checkbox" name="additional_identities" value="newcomer"> Newcomer or immigrant<br>
+        <input type="checkbox" name="additional_identities" value="disability"> Person with a disability<br>
+        <input type="checkbox" name="additional_identities" value="none"> None of the above
+      </div>
 
-    <label>8. Type of discrimination</label><br>
-    <input type="checkbox" name="discrimination_type" value="verbal"> Verbal Harassment<br>
-    <input type="checkbox" name="discrimination_type" value="physical"> Physical Assault<br>
-    <input type="checkbox" name="discrimination_type" value="employment"> Employment Discrimination<br>
-    <input type="checkbox" name="discrimination_type" value="housing"> Housing Discrimination<br>
-    <input type="checkbox" name="discrimination_type" value="profiling"> Racial Profiling<br>
-    <input type="checkbox" name="discrimination_type" value="service_denial"> Service Denial<br>
-    <input type="checkbox" name="discrimination_type" value="hate_speech"> Hate Speech<br>
-    <input type="checkbox" name="discrimination_type" value="vandalism"> Vandalism or Property Damage<br>
-    <input type="checkbox" name="discrimination_type" value="other"> Other<br><br>
+      <label>7. Location of incident (please specify address or description):</label>
+      <textarea name="incident_address"></textarea>
 
-    <label>9. Did you report this incident to another organization or authority?</label><br>
-    <input type="checkbox" name="reported_elsewhere" value="yes"> Yes<br>
-    <input type="checkbox" name="reported_elsewhere" value="no"> No<br><br>
+      <label>8. Type of discrimination</label>
+      <div class="options">
+        <input type="checkbox" name="discrimination_type" value="verbal"> Verbal Harassment<br>
+        <input type="checkbox" name="discrimination_type" value="physical"> Physical Assault<br>
+        <input type="checkbox" name="discrimination_type" value="employment"> Employment Discrimination<br>
+        <input type="checkbox" name="discrimination_type" value="housing"> Housing Discrimination<br>
+        <input type="checkbox" name="discrimination_type" value="profiling"> Racial Profiling<br>
+        <input type="checkbox" name="discrimination_type" value="service_denial"> Service Denial<br>
+        <input type="checkbox" name="discrimination_type" value="hate_speech"> Hate Speech<br>
+        <input type="checkbox" name="discrimination_type" value="vandalism"> Vandalism or Property Damage<br>
+        <input type="checkbox" name="discrimination_type" value="other"> Other
+      </div>
 
-    <label>If yes, please specify:</label><br>
-    <textarea name="report_details"></textarea><br><br>
+      <label>9. Did you report this incident to another organization or authority?</label>
+      <div class="options">
+        <input type="radio" name="reported_elsewhere" value="yes"> Yes<br>
+        <input type="radio" name="reported_elsewhere" value="no"> No
+      </div>
 
-    <label>10. Can you please provide the details of the incident, in your own words?</label><br>
-    <textarea name="incident_details"></textarea><br><br>
+      <label>If yes, please specify:</label>
+      <textarea name="report_details"></textarea>
 
-    <label>11. Would you like us to follow up on your case?</label><br>
-    <input type="checkbox" name="follow_up" value="yes"> Yes<br>
-    <input type="checkbox" name="follow_up" value="no"> No<br><br>
+      <label>10. Can you please provide the details of the incident, in your own words?</label>
+      <textarea name="incident_details"></textarea>
 
-    <label>12. How has this incident impacted you?</label><br>
-    <input type="checkbox" name="impact" value="emotional"> Emotional distress<br>
-    <input type="checkbox" name="impact" value="fear"> Fear for safety<br>
-    <input type="checkbox" name="impact" value="job_loss"> Loss of employment/income<br>
-    <input type="checkbox" name="impact" value="housing_services"> Disrupted access to housing/services<br>
-    <input type="checkbox" name="impact" value="legal"> Legal concerns<br><br>
+      <label>11. Would you like us to follow up on your case?</label>
+      <div class="options">
+        <input type="radio" name="follow_up" value="yes"> Yes<br>
+        <input type="radio" name="follow_up" value="no"> No
+      </div>
 
-    <label>13. What kind of support would be most helpful for you?</label><br>
-    <input type="checkbox" name="support_type" value="mental_health"> Mental health support<br>
-    <input type="checkbox" name="support_type" value="legal_aid"> Legal aid/referral<br>
-    <input type="checkbox" name="support_type" value="advocacy"> Community advocacy or mediation<br>
-    <input type="checkbox" name="support_type" value="employment_help"> Employment/human rights assistance<br>
-    <input type="checkbox" name="support_type" value="no_support"> No support needed<br><br>
+      <label>12. How has this incident impacted you?</label>
+      <div class="options">
+        <input type="checkbox" name="impact" value="emotional"> Emotional distress<br>
+        <input type="checkbox" name="impact" value="fear"> Fear for safety<br>
+        <input type="checkbox" name="impact" value="job_loss"> Loss of employment/income<br>
+        <input type="checkbox" name="impact" value="housing_services"> Disrupted access to housing/services<br>
+        <input type="checkbox" name="impact" value="legal"> Legal concerns
+      </div>
 
-    <label>14. Would you like to receive a summary of community resources to support you?</label><br>
-    <input type="checkbox" name="resource_summary" value="yes"> Yes (email/text/phone)<br>
-    <input type="checkbox" name="resource_summary" value="no"> No<br><br>
+      <label>13. What kind of support would be most helpful for you?</label>
+      <div class="options">
+        <input type="checkbox" name="support_type" value="mental_health"> Mental health support<br>
+        <input type="checkbox" name="support_type" value="legal_aid"> Legal aid/referral<br>
+        <input type="checkbox" name="support_type" value="advocacy"> Community advocacy or mediation<br>
+        <input type="checkbox" name="support_type" value="employment_help"> Employment/human rights assistance<br>
+        <input type="checkbox" name="support_type" value="no_support"> No support needed
+      </div>
 
-    <label>15. Informed Consent</label><br>
-    <input type="checkbox" name="consent" value="report_only"> I consent to my data being included in reports<br>
-    <input type="checkbox" name="consent" value="refer_only"> I only consent to refer to support partners<br>
-    <input type="checkbox" name="consent" value="no_use"> I do not consent<br><br>
+      <label>14. Would you like to receive a summary of community resources to support you?</label>
+      <div class="options">
+        <input type="radio" name="resource_summary" value="yes"> Yes<br>
+        <input type="radio" name="resource_summary" value="no"> No
+      </div>
 
-    <button type="submit">Submit</button>
-  </form>
+      <label>15. Informed Consent</label>
+      <div class="options">
+        <input type="radio" name="consent" value="report_only"> I consent to my data being included in reports<br>
+        <input type="radio" name="consent" value="refer_only"> I only consent to refer to support partners<br>
+        <input type="radio" name="consent" value="no_use"> I do not consent
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 
   <script>
     const form = document.getElementById("reportForm");
