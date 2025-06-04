@@ -193,96 +193,77 @@
   </div>
 
     <script>
-    const form = document.getElementById("reportForm");
+  const form = document.getElementById("reportForm");
 
-    form.onsubmit = async (e) => {
-      e.preventDefault();
+  form.onsubmit = async (e) => {
+    e.preventDefault();
 
-      const formData = new FormData(form);
-      const data = {};
+    const formData = new FormData(form);
+    const data = {};
 
-      formData.forEach((value, key) => {
-        if (data[key]) {
-          if (Array.isArray(data[key])) {
-            data[key].push(value);
-          } else {
-            data[key] = [data[key], value];
-          }
+    formData.forEach((value, key) => {
+      if (data[key]) {
+        if (Array.isArray(data[key])) {
+          data[key].push(value);
         } else {
-          const field = form.querySelectorAll(`[name="${key}"]`);
-          if (field.length > 1 && field[0].type === "checkbox") {
-            data[key] = [value];
-          } else {
-            data[key] = value;
-          }
+          data[key] = [data[key], value];
         }
-      });
-
-      try {
-        const response = await fetch("https://survey211.azurewebsites.net/api/savesurvey", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-          const wantsFollowUp = data["follow_up"] === "yes";
-          const message = wantsFollowUp
-            ? "Thank you for your participation. A 211 representative will follow up with you shortly."
-            : "Thank you for your participation. You can find more information at https://211ontario.ca/";
-
-          const newWindow = window.open();
-          newWindow.document.write(`
-            <html>
-              <head>
-                <title>Thank You</title>
-                <style>
-                  body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f0f4f8;
-                    text-align: center;
-                    padding: 100px;
-                    color: #2b4c6f;
-                  }
-                  a {
-                    color: #2b4c6f;
-                    text-decoration: underline;
-                  }
-                </style>
-              </head>
-              <body>
-                <h1>${message}</h1>
-                ${!wantsFollowUp ? `<p><a href="https://211ontario.ca/" target="_blank">Visit 211 Ontario</a></p>` : ""}
-              </body>
-            </html>
-          `);
-          newWindow.document.close();
+      } else {
+        const field = form.querySelectorAll(`[name="${key}"]`);
+        if (field.length > 1 && field[0].type === "checkbox") {
+          data[key] = [value];
         } else {
-          alert("Submission failed: " + (await response.text()));
+          data[key] = value;
         }
-      } catch (err) {
-        alert("Error: " + err.message);
       }
-    };
+    });
 
-    const form = document.getElementById("reportForm");
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-      const data = {};
-      new FormData(form).forEach((value, key) => {
-        if (!data[key]) data[key] = [];
-        data[key].push(value);
-      });
-
+    try {
       const response = await fetch("https://survey211.azurewebsites.net/api/savesurvey", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
-      if (response.ok) alert("Survey submitted successfully!");
-      else alert("Submission failed: " + (await response.text()));
-    };
-  </script>
+      if (response.ok) {
+        const wantsFollowUp = data["follow_up"] === "yes";
+        const message = wantsFollowUp
+          ? "Thank you for your participation. A 211 representative will follow up with you shortly."
+          : "Thank you for your participation. You can find more information at https://211ontario.ca/";
+
+        const newWindow = window.open();
+        newWindow.document.write(`
+          <html>
+            <head>
+              <title>Thank You</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f0f4f8;
+                  text-align: center;
+                  padding: 100px;
+                  color: #2b4c6f;
+                }
+                a {
+                  color: #2b4c6f;
+                  text-decoration: underline;
+                }
+              </style>
+            </head>
+            <body>
+              <h1>${message}</h1>
+              ${!wantsFollowUp ? `<p><a href="https://211ontario.ca/" target="_blank">Visit 211 Ontario</a></p>` : ""}
+            </body>
+          </html>
+        `);
+        newWindow.document.close();
+      } else {
+        alert("Submission failed: " + (await response.text()));
+      }
+    } catch (err) {
+      alert("Error: " + err.message);
+    }
+  };
+</script>
 </body>
 </html>
