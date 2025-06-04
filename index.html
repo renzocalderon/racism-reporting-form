@@ -188,6 +188,20 @@
         <input type="radio" name="consent" value="no_use"> I do not consent
       </div>
 
+      <div id="followUpContact" style="display:none; margin-top: 10px;">
+      <label>Phone number (optional):</label>
+      <input type="text" name="follow_up_phone">
+
+      <label>Email (optional):</label>
+      <input type="text" name="follow_up_email">
+      </div>
+
+      <!-- Postal code for summary -->
+      <div id="postalCodeField" style="display:none; margin-top: 10px;">
+      <label>Postal Code (to tailor community resources):</label>
+      <input type="text" name="postal_code">
+      </div>
+
       <button type="submit">Submit</button>
     </form>
   </div>
@@ -264,6 +278,20 @@
       alert("Error: " + err.message);
     }
   };
+
+    document.querySelectorAll('input[name="follow_up"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      const show = input.value === "yes";
+      document.getElementById("followUpContact").style.display = show ? "block" : "none";
+    });
+  });
+
+  document.querySelectorAll('input[name="resource_summary"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      const show = input.value === "yes";
+      document.getElementById("postalCodeField").style.display = show ? "block" : "none";
+    });
+  });    
 </script>
 </body>
 </html>
