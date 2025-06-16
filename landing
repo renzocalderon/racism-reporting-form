@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report Racism, Hate & Discrimination – KF&LA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ====== In-page CSS ====== -->
+  <style>
+    :root {
+      --accent: #0046ad;        /* deep blue */
+      --accent-light: #e7f0ff;  /* very light blue */
+      --danger: #b11226;        /* 911 banner red */
+      --text: #1a1a1a;
+      --bg:   #ffffff;
+      --radius: 0.5rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body{
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text); background: var(--bg); line-height: 1.55; padding: 0 1rem;
+    }
+    header, main, footer { max-width: 900px; margin: auto; }
+    header{padding: 3rem 0 2rem; text-align: center;}
+    header h1{font-size: 2.25rem; font-weight: 700; color: var(--accent);}
+    header p.lead{font-size: 1.125rem; margin-top: 0.75rem; color:#333;}
+    section{margin: 2rem 0;}
+    h2{font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--accent);}
+    ul{margin-left: 1.25rem; list-style: disc;}
+    .cta{
+      display: flex; flex-direction: column; gap: 1rem; align-items: center;
+      margin-top: 2.5rem;
+    }
+    .cta input[type="text"]{
+      padding: 0.6rem 0.8rem; font-size: 1rem; border: 1px solid #ccc;
+      border-radius: var(--radius); width: 100%; max-width: 22rem;
+    }
+    .cta button{
+      padding: 0.75rem 2rem; font-size: 1rem; font-weight: 600; color:#fff;
+      background: var(--accent); border: none; border-radius: var(--radius);
+      cursor: pointer; transition: background 0.2s ease;
+    }
+    .cta button:hover{background:#003a8f;}
+    .error{color: var(--danger); margin-top: 0.5rem; font-weight:600;}
+    .help-banner{
+      background:#ffe9ec; border-left:6px solid var(--danger);
+      padding: 1rem; border-radius: var(--radius); margin-top:1rem;
+    }
+    .help-banner strong{display:block; font-size:1.1rem; margin-bottom:0.25rem;}
+    footer{font-size:0.875rem; text-align:center; padding:3rem 0 1rem; color:#666;}
+    /* Small screens */
+    @media (min-width: 600px){
+      header h1{font-size:2.75rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- ====== PAGE HEADER ====== -->
+  <header>
+    <h1>Have you experienced or witnessed racism, hate, or discrimination?</h1>
+    <p class="lead">We’re here to listen. Your experience matters.</p>
+  </header>
+
+  <!-- ====== INTRO ====== -->
+  <main>
+    <section>
+      <p>
+        This reporting tool allows individuals to document incidents of racism, hate,
+        and discrimination in a safe, confidential, and accessible way. Whether it
+        happened in public, online, at work, in school, or elsewhere—you are not alone.
+        Sharing your story helps build safer, more inclusive communities.
+      </p>
+    </section>
+
+    <!-- WHAT TO EXPECT -->
+    <section>
+      <h2>What You Can Expect</h2>
+      <ul>
+        <li><strong>Confidentiality:</strong> Your personal information will never be shared without your permission.</li>
+        <li><strong>Support &amp; Referrals:</strong> Based on what you share, we may suggest relevant services.</li>
+        <li><strong>Community Change:</strong> Reports help identify patterns of harm and inform advocacy.</li>
+      </ul>
+    </section>
+
+    <!-- WHO CAN SUBMIT -->
+    <section>
+      <h2>Who Can Submit a Report</h2>
+      <p>
+        This tool is for people who live, work, or study in the Kingston, Frontenac,
+        Lennox &amp; Addington (KF&amp;LA) region. Outside the area? Dial&nbsp;<strong>2-1-1</strong> to find local supports.
+      </p>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="cta" aria-live="polite">
+      <label for="postal">Enter your postal code to begin:</label>
+      <input id="postal" type="text" placeholder="e.g., K7L 2Y2" maxlength="7" autocomplete="postal-code">
+      <button id="startBtn" style="display:none;">Start My Confidential Report</button>
+      <div id="msg" class="error" role="status" aria-live="assertive"></div>
+    </section>
+
+    <!-- URGENT HELP -->
+    <section class="help-banner">
+      <strong>Need Immediate Help?</strong>
+      If you are in danger, call <strong>9-1-1</strong> right away.  
+      For non-emergency supports, dial <strong>2-1-1</strong> 24/7 to speak with a trained navigator.
+    </section>
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    © <span id="year"></span> KF&amp;LA Anti-Racism Reporting Service
+  </footer>
+
+  <!-- ====== SCRIPT ====== -->
+  <script>
+    /* ==== Year in footer ==== */
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ==== Postal-code gatekeeper ==== */
+    const postalInput = document.getElementById('postal');
+    const startBtn    = document.getElementById('startBtn');
+    const msg         = document.getElementById('msg');
+
+    const allowedPrefixes = ['K7', 'K0H', 'K0K']; // Kingston, Frontenac, Lennox & Addington
+
+    function normalize(pc){
+      return pc.toUpperCase().replace(/\s+/g, ''); // strip spaces, uppercase
+    }
+
+    function validatePrefix(pc){
+      return allowedPrefixes.some(prefix => pc.startsWith(prefix));
+    }
+
+    postalInput.addEventListener('input', () => {
+      const value = normalize(postalInput.value);
+      msg.textContent = '';
+      startBtn.style.display = 'none';
+
+      // Check once we have at least 2 chars (prefix length)
+      if (value.length >= 2){
+        if (validatePrefix(value)){
+          startBtn.style.display = 'block';
+        } else if (value.length >= 3){ // show error only after 3+ chars
+          msg.textContent =
+            'Unfortunately, this postal code is outside our service area. ' +
+            'Please dial 2-1-1 for local supports.';
+        }
+      }
+    });
+
+    /* ==== Click “Start My Report” ==== */
+    startBtn.addEventListener('click', () => {
+      // Redirect to your form / next page (adjust filename as needed)
+      window.location.href = 'consent.html';
+    });
+  </script>
+</body>
+</html>
