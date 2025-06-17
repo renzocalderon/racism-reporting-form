@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Racism Reporting Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body{
       font-family:Arial,sans-serif;background:#f5f8fa;margin:0;
@@ -10,16 +11,23 @@
     }
     .container{
       background:#fff;margin:40px auto;padding:30px 40px;border-radius:10px;
-      max-width:800px;box-shadow:0 4px 10px rgba(0,0,0,0.1);position:relative;
+      max-width:900px;width:100%;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);position:relative;
     }
     .logo{position:absolute;top:30px;right:30px;width:120px;}
     h1{text-align:center;color:#2b4c6f;margin-bottom:40px;}
-    label{display:block;font-weight:bold;margin:20px 0 10px;}
-    input[type="text"],input[type="date"],input[type="time"],textarea{
-      width:100%;padding:8px;margin-top:5px;border:1px solid #ccc;border-radius:5px;
+    label{display:block;font-weight:bold;margin:20px 0 8px;}
+    input[type="text"],input[type="date"],input[type="time"],input[type="email"],
+    textarea,select{
+      width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;
+      margin-top:4px;
     }
     textarea{resize:vertical;height:80px;}
-    .options{margin-left:20px;}
+    .options{margin-left:20px;margin-top:4px;}
+    .row-flex{
+      display:flex;gap:20px;flex-wrap:wrap;
+    }
+    .row-flex > div{flex:1 1 300px;}
     /* buttons */
     .btn{
       display:block;margin:30px auto 0;padding:12px 24px;font-size:16px;
@@ -28,6 +36,9 @@
     }
     .btn:hover{background:#3e618c;}
     .btn + .btn{margin-top:15px;}
+    .helper{
+      font-size:.9rem;font-weight:normal;color:#555;margin-top:4px;
+    }
   </style>
 </head>
 <body>
@@ -40,27 +51,57 @@
     <h1>Racism Reporting Form</h1>
 
     <form id="reportForm">
-      <!-- 1 -->
-      <label>1. Date of incident:
-        <input type="date" name="incident_date" />
-      </label>
+      <!-- Name -->
+      <label>Name (first &amp; last):</label>
+      <input type="text" name="respondent_name" placeholder="Jane Doe" />
 
-      <!-- 2 -->
-      <label>2. Time of incident:
-        <input type="time" name="incident_time" />
+      <!-- Age range -->
+      <label>
+        What is your age range?
+        <span class="helper">(Optional; used only in aggregate and e-referral)</span>
       </label>
-
-      <!-- 3 -->
-      <label>3. Where did this incident take place?</label>
       <div class="options">
-        <input type="checkbox" name="incident_location" value="school" /> School<br />
-        <input type="checkbox" name="incident_location" value="work" /> Work<br />
-        <input type="checkbox" name="incident_location" value="public_space" /> Public Space<br />
-        <input type="checkbox" name="incident_location" value="online" /> Online
+        <input type="radio" name="age_range" value="under_12" /> Under 12<br />
+        <input type="radio" name="age_range" value="12_17" /> 12–17<br />
+        <input type="radio" name="age_range" value="18_24" /> 18–24<br />
+        <input type="radio" name="age_range" value="25_34" /> 25–34<br />
+        <input type="radio" name="age_range" value="35_44" /> 35–44<br />
+        <input type="radio" name="age_range" value="45_54" /> 45–54<br />
+        <input type="radio" name="age_range" value="55_64" /> 55–64<br />
+        <input type="radio" name="age_range" value="65_plus" /> 65+<br />
+        <input type="radio" name="age_range" value="prefer_not_say" /> Prefer not to say
       </div>
 
-      <!-- 4 -->
-      <label>4. How do you identify your racial or ethnic background?</label>
+      <!-- 1 – Date -->
+      <label>Date of incident:</label>
+      <input type="date" name="incident_date" />
+
+      <!-- 2 – Time -->
+      <label>Time of incident:</label>
+      <input type="time" name="incident_time" />
+
+      <!-- 3 & 7 in the same row -->
+      <div class="row-flex">
+        <div>
+          <label>Where did this incident take place?</label>
+          <div class="options">
+            <input type="checkbox" name="incident_location" value="school" /> School<br />
+            <input type="checkbox" name="incident_location" value="work" /> Work<br />
+            <input type="checkbox" name="incident_location" value="public_space" /> Public Space<br />
+            <input type="checkbox" name="incident_location" value="online" /> Online<br />
+            <input type="checkbox" name="incident_location" value="other" /> Other<br />
+            <input type="text" name="incident_location_other" placeholder="Please specify (optional)" />
+          </div>
+        </div>
+
+        <div>
+          <label>Specific address or description:</label>
+          <textarea name="incident_address"></textarea>
+        </div>
+      </div>
+
+      <!-- 4 – Racial / ethnic background -->
+      <label>How do you identify your racial or ethnic background?</label>
       <div class="options">
         <input type="checkbox" name="racial_background" value="east_asian" /> East Asian<br />
         <input type="checkbox" name="racial_background" value="southeast_asian" /> Southeast Asian<br />
@@ -71,25 +112,49 @@
         <input type="checkbox" name="racial_background" value="prefer_not_say" /> Prefer not to say
       </div>
 
-      <!-- 5 -->
-      <label>5. Do you identify as part of an Indigenous group? If other, please specify:</label>
+      <!-- Religious group -->
+      <label>
+        Do you identify as belonging to a religious or spiritual group?
+        <span class="helper">(Optional; used only in aggregate and e-referral)</span>
+      </label>
+      <div class="options">
+        <input type="radio" name="religious_group" value="yes" /> Yes<br />
+        <input type="radio" name="religious_group" value="no" /> No<br />
+        <input type="radio" name="religious_group" value="prefer_not_say" /> Prefer not to say
+      </div>
+
+      <label>If yes, please indicate your religious or spiritual affiliation:</label>
+      <div class="options">
+        <input type="radio" name="religious_affiliation" value="islam" /> Islam<br />
+        <input type="radio" name="religious_affiliation" value="christianity" /> Christianity<br />
+        <input type="radio" name="religious_affiliation" value="judaism" /> Judaism<br />
+        <input type="radio" name="religious_affiliation" value="hinduism" /> Hinduism<br />
+        <input type="radio" name="religious_affiliation" value="buddhism" /> Buddhism<br />
+        <input type="radio" name="religious_affiliation" value="sikhism" /> Sikhism<br />
+        <input type="radio" name="religious_affiliation" value="indigenous_spirituality" /> Indigenous Spirituality<br />
+        <input type="radio" name="religious_affiliation" value="other" /> Other (specify)<br />
+        <input type="text" name="religious_affiliation_other" placeholder="Your affiliation (optional)" /><br />
+        <input type="radio" name="religious_affiliation" value="prefer_not_say" /> Prefer not to say
+      </div>
+
+      <!-- 5 – Indigenous group -->
+      <label>
+        Do you identify as part of an Indigenous group? If other, please specify:
+      </label>
       <input type="text" name="indigenous_group" />
 
-      <!-- 6 -->
-      <label>6. Do you identify as part of any of the following groups?</label>
+      <!-- 6 – Additional identities (with prefer not to say) -->
+      <label>Do you identify as part of any of the following groups?</label>
       <div class="options">
         <input type="checkbox" name="additional_identities" value="lgbtq2s" /> LGBTQ2S+<br />
         <input type="checkbox" name="additional_identities" value="newcomer" /> Newcomer or immigrant<br />
         <input type="checkbox" name="additional_identities" value="disability" /> Person with a disability<br />
-        <input type="checkbox" name="additional_identities" value="none" /> None of the above
+        <input type="checkbox" name="additional_identities" value="none" /> None of the above<br />
+        <input type="checkbox" name="additional_identities" value="prefer_not_say" /> Prefer not to say
       </div>
 
-      <!-- 7 -->
-      <label>7. Location of incident (please specify address or description):</label>
-      <textarea name="incident_address"></textarea>
-
-      <!-- 8 -->
-      <label>8. Type of discrimination</label>
+      <!-- 8 – Type of discrimination -->
+      <label>Type of discrimination:</label>
       <div class="options">
         <input type="checkbox" name="discrimination_type" value="verbal" /> Verbal Harassment<br />
         <input type="checkbox" name="discrimination_type" value="physical" /> Physical Assault<br />
@@ -102,8 +167,8 @@
         <input type="checkbox" name="discrimination_type" value="other" /> Other
       </div>
 
-      <!-- 9 -->
-      <label>9. Did you report this incident to another organization or authority?</label>
+      <!-- 9 – Reported elsewhere -->
+      <label>Did you report this incident to another organization or authority?</label>
       <div class="options">
         <input type="radio" name="reported_elsewhere" value="yes" /> Yes<br />
         <input type="radio" name="reported_elsewhere" value="no" /> No
@@ -112,19 +177,21 @@
       <label>If yes, please specify:</label>
       <textarea name="report_details"></textarea>
 
-      <!-- 10 -->
-      <label>10. Can you please provide the details of the incident, in your own words?</label>
+      <!-- 10 – Incident narrative -->
+      <label>
+        Can you please provide the details of the incident, in your own words?
+      </label>
       <textarea name="incident_details"></textarea>
 
-      <!-- 11 -->
-      <label>11. Would you like us to follow up on your case?</label>
+      <!-- 11 – Follow-up -->
+      <label>Would you like us to follow up on your case?</label>
       <div class="options">
         <input type="radio" name="follow_up" value="yes" /> Yes<br />
         <input type="radio" name="follow_up" value="no" /> No
       </div>
 
-      <!-- 12 -->
-      <label>12. How has this incident impacted you?</label>
+      <!-- 12 – Impact -->
+      <label>How has this incident impacted you?</label>
       <div class="options">
         <input type="checkbox" name="impact" value="emotional" /> Emotional distress<br />
         <input type="checkbox" name="impact" value="fear" /> Fear for safety<br />
@@ -133,8 +200,8 @@
         <input type="checkbox" name="impact" value="legal" /> Legal concerns
       </div>
 
-      <!-- 13 -->
-      <label>13. What kind of support would be most helpful for you?</label>
+      <!-- 13 – Support needed -->
+      <label>What kind of support would be most helpful for you?</label>
       <div class="options">
         <input type="checkbox" name="support_type" value="mental_health" /> Mental health support<br />
         <input type="checkbox" name="support_type" value="legal_aid" /> Legal aid/referral<br />
@@ -143,60 +210,140 @@
         <input type="checkbox" name="support_type" value="no_support" /> No support needed
       </div>
 
-      <!-- 14 -->
-      <label>14. Would you like to receive a summary of community resources to support you?</label>
+      <!-- 14 – Resource summary -->
+      <label>
+        Would you like to receive a summary of community resources to support you?
+      </label>
       <div class="options">
         <input type="radio" name="resource_summary" value="yes" /> Yes<br />
         <input type="radio" name="resource_summary" value="no" /> No
       </div>
 
-      <!-- 15 -->
-      <label>15. Informed Consent</label>
+      <!-- ================== PERPETRATOR INFORMATION ================== -->
+      <h2 style="margin-top:40px;color:#2b4c6f;">Information about the person(s) responsible</h2>
+
+      <!-- Relationship -->
+      <label>What is the person’s relationship to you (if any)?</label>
       <div class="options">
-        <input type="radio" name="consent" value="report_only" /> I consent to my data being included in reports<br />
-        <input type="radio" name="consent" value="refer_only" /> I only consent to refer to support partners<br />
-        <input type="radio" name="consent" value="no_use" /> I do not consent
+        <input type="checkbox" name="perp_relationship" value="stranger" /> Stranger<br />
+        <input type="checkbox" name="perp_relationship" value="acquaintance" /> Acquaintance<br />
+        <input type="checkbox" name="perp_relationship" value="friend" /> Friend or peer<br />
+        <input type="checkbox" name="perp_relationship" value="employer" /> Employer or manager<br />
+        <input type="checkbox" name="perp_relationship" value="coworker" /> Coworker<br />
+        <input type="checkbox" name="perp_relationship" value="educator" /> Teacher / professor / school staff<br />
+        <input type="checkbox" name="perp_relationship" value="student" /> Student<br />
+        <input type="checkbox" name="perp_relationship" value="health_care" /> Health care provider<br />
+        <input type="checkbox" name="perp_relationship" value="landlord" /> Landlord or housing provider<br />
+        <input type="checkbox" name="perp_relationship" value="police" /> Police officer or law enforcement<br />
+        <input type="checkbox" name="perp_relationship" value="government" /> Government worker<br />
+        <input type="checkbox" name="perp_relationship" value="business_owner" /> Business owner or employee<br />
+        <input type="checkbox" name="perp_relationship" value="transit" /> Transit operator / taxi / rideshare<br />
+        <input type="checkbox" name="perp_relationship" value="online_user" /> Online user (social media, gaming, etc.)<br />
+        <input type="checkbox" name="perp_relationship" value="other" /> Other (specify)<br />
+        <input type="text" name="perp_relationship_other" placeholder="Please specify (optional)" /><br />
+        <input type="checkbox" name="perp_relationship" value="dont_know" /> Don’t know / Prefer not to say
       </div>
 
-      <!-- ACTION BUTTONS (both are submit) -->
-      <button type="submit" value="form" class="btn">Submit Form</button>
-      <button type="submit" value="ereferral" class="btn">Submit e-Referral</button>
+      <!-- Gender -->
+      <label>Perceived gender identity or presentation:</label>
+      <div class="options">
+        <input type="radio" name="perp_gender" value="male" /> Male<br />
+        <input type="radio" name="perp_gender" value="female" /> Female<br />
+        <input type="radio" name="perp_gender" value="non_binary" /> Non-binary / gender diverse<br />
+        <input type="radio" name="perp_gender" value="dont_know" /> Prefer not to say / Don’t know
+      </div>
+
+      <!-- Race -->
+      <label>Perceived race or ethnicity (based on appearance or what was disclosed):</label>
+      <div class="options">
+        <input type="checkbox" name="perp_race" value="white" /> White (European descent)<br />
+        <input type="checkbox" name="perp_race" value="black" /> Black (African, Caribbean, etc.)<br />
+        <input type="checkbox" name="perp_race" value="east_asian" /> East Asian<br />
+        <input type="checkbox" name="perp_race" value="south_asian" /> South Asian<br />
+        <input type="checkbox" name="perp_race" value="southeast_asian" /> Southeast Asian<br />
+        <input type="checkbox" name="perp_race" value="mena" /> Middle Eastern or North African<br />
+        <input type="checkbox" name="perp_race" value="indigenous" /> Indigenous (First Nations, Inuit, Métis)<br />
+        <input type="checkbox" name="perp_race" value="latinx" /> Latino/a/x or Hispanic<br />
+        <input type="checkbox" name="perp_race" value="mixed" /> Mixed race or multiracial<br />
+        <input type="checkbox" name="perp_race" value="other" /> Other (specify)<br />
+        <input type="text" name="perp_race_other" placeholder="Please specify (optional)" /><br />
+        <input type="checkbox" name="perp_race" value="dont_know" /> Don’t know / Prefer not to say
+      </div>
+
+      <!-- Age -->
+      <label>Perpetrator’s approximate age:</label>
+      <div class="options">
+        <input type="radio" name="perp_age" value="under_18" /> Under 18<br />
+        <input type="radio" name="perp_age" value="18_24" /> 18–24<br />
+        <input type="radio" name="perp_age" value="25_34" /> 25–34<br />
+        <input type="radio" name="perp_age" value="35_44" /> 35–44<br />
+        <input type="radio" name="perp_age" value="45_54" /> 45–54<br />
+        <input type="radio" name="perp_age" value="55_64" /> 55–64<br />
+        <input type="radio" name="perp_age" value="65_plus" /> 65+<br />
+        <input type="radio" name="perp_age" value="dont_know" /> Don’t know
+      </div>
+
+      <!-- Distinguishing features -->
+      <label>Were there any distinguishing features? (Select all that apply)</label>
+      <div class="options">
+        <input type="checkbox" name="perp_features" value="uniform" /> Uniform or work attire<br />
+        <input type="text" name="perp_uniform_desc" placeholder="Describe uniform (optional)" /><br />
+        <input type="checkbox" name="perp_features" value="accent" /> Specific accent or language<br />
+        <input type="text" name="perp_accent_desc" placeholder="Describe accent/language (optional)" /><br />
+        <input type="checkbox" name="perp_features" value="vehicle" /> Vehicle used<br />
+        <input type="text" name="perp_vehicle_desc" placeholder="Describe vehicle (optional)" /><br />
+        <input type="checkbox" name="perp_features" value="technology" /> Technology used (social media, phone, app)<br />
+        <input type="text" name="perp_tech_desc" placeholder="Describe technology (optional)" /><br />
+        <input type="checkbox" name="perp_features" value="other" /> Other (specify)<br />
+        <input type="text" name="perp_other_desc" placeholder="Other distinguishing feature (optional)" /><br />
+        <input type="checkbox" name="perp_features" value="none" /> None / Don’t know
+      </div>
+
+      <!-- Free text for any other relevant info -->
+      <label>Other relevant information (optional):</label>
+      <textarea name="additional_notes"></textarea>
+
+      <!-- ================== BUTTONS ================== -->
+      <p style="margin-top:40px;font-weight:bold;">
+        <em>Select one of the options below:</em>
+      </p>
+      <button type="submit" value="ereferral" class="btn">
+        I would like to be connected to Victim Services Kingston<br />
+        <small>(Send e-referral &amp; summary)</small>
+      </button>
+
+      <button type="submit" value="report" class="btn">
+        Submit Report Only – No Referral<br />
+        <small>(You will receive the contact number for Victim Services)</small>
+      </button>
     </form>
   </div>
 
   <script>
-    /* ---------- form-submission logic ---------- */
     const form = document.getElementById("reportForm");
 
     form.onsubmit = async (e) => {
       e.preventDefault();
+      const action = e.submitter.value; // "ereferral" or "report"
 
-      /* which button triggered submit? */
-      const action = e.submitter.value;   // "form" or "ereferral"
-
-      /* gather data */
+      /* Build JSON from form */
       const formData = new FormData(form);
       const data = {};
-
       formData.forEach((value, key) => {
         if (data[key]) {
-          if (Array.isArray(data[key])) {
-            data[key].push(value);
-          } else {
-            data[key] = [data[key], value];
-          }
+          if (Array.isArray(data[key])) data[key].push(value);
+          else data[key] = [data[key], value];
         } else {
-          const field = form.querySelectorAll(`[name="${key}"]`);
-          if (field.length > 1 && field[0].type === "checkbox") {
-            data[key] = [value];
-          } else {
-            data[key] = value;
-          }
+          /* detect checkbox groups */
+          const fields = form.querySelectorAll(`[name="${key}"]`);
+          if (fields.length > 1 && fields[0].type === "checkbox") data[key] = [value];
+          else data[key] = value;
         }
       });
 
+      /* POST to the same endpoint (unchanged) */
       try {
-        const response = await fetch(
+        const res = await fetch(
           "https://survey211.azurewebsites.net/api/savesurvey",
           {
             method: "POST",
@@ -205,43 +352,29 @@
           }
         );
 
-        if (!response.ok) {
-          alert("Submission failed: " + (await response.text()));
+        if (!res.ok) {
+          alert("Submission failed: " + (await res.text()));
           return;
         }
 
-        if (action === "form") {
-          /* Thank-you window */
-          const wantsFollowUp = data["follow_up"] === "yes";
-          const message = wantsFollowUp
-            ? "Thank you for your participation. A 211 representative will follow up with you shortly."
-            : "Thank you for your participation. You can find more information at https://211ontario.ca/";
-
+        if (action === "report") {
+          /* Thank-you popup with contact number */
           const w = window.open();
           w.document.write(`
-            <html>
-              <head>
-                <title>Thank You</title>
-                <style>
-                  body{font-family:Arial,sans-serif;background:#f0f4f8;text-align:center;
-                       padding:100px;color:#2b4c6f;}
-                  a{color:#2b4c6f;text-decoration:underline;}
-                </style>
-              </head>
-              <body>
-                <h1>${message}</h1>
-                ${
-                  !wantsFollowUp
-                    ? '<p><a href="https://211ontario.ca/" target="_blank">Visit 211 Ontario</a></p>'
-                    : ""
-                }
-              </body>
-            </html>
+            <html><head>
+              <title>Thank You</title>
+              <style>
+                body{font-family:Arial,sans-serif;background:#f0f4f8;text-align:center;
+                     padding:100px;color:#2b4c6f;}
+              </style></head><body>
+              <h1>Thank you for submitting your report.</h1>
+              <p>If you wish to reach Victim Services Kingston directly, please call <strong>613-548-4834</strong>.</p>
+            </body></html>
           `);
           w.document.close();
         } else {
-          /* e-Referral: redirect to next step */
-          // Optionally: sessionStorage.setItem('reportJSON', JSON.stringify(data));
+          /* Save for e-referral page if needed */
+          sessionStorage.setItem("reportJSON", JSON.stringify(data));
           window.location.href = "ereferral.html";
         }
       } catch (err) {
