@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>E-Referral Contact Details – KF&LA Anti-Racism Reporting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --accent:#0046ad; --text:#1a1a1a; --bg:#ffffff; --radius:.5rem;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:Arial,sans-serif;background:#f5f8fa;line-height:1.55;
+      display:flex;flex-direction:column;align-items:center;padding:0 1rem;
+    }
+    .container{
+      background:#fff;margin:40px auto;padding:30px 40px;border-radius:10px;
+      max-width:600px;width:100%;box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      position:relative;
+    }
+    h1{text-align:center;color:var(--accent);margin-bottom:30px;font-size:1.75rem;}
+    label{display:block;font-weight:bold;margin:20px 0 8px;}
+    input[type="text"],input[type="email"],input[type="tel"]{
+      width:100%;padding:10px;border:1px solid #ccc;border-radius:var(--radius);
+    }
+    .options{margin-left:20px;}
+    button{
+      display:block;margin:30px auto 0;padding:12px 28px;font-size:16px;
+      color:#fff;background:var(--accent);border:none;border-radius:8px;
+      cursor:pointer;transition:background .2s;
+    }
+    button:hover{background:#003a8f;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contact Information for e-Referral</h1>
+
+    <form id="ereferralForm">
+      <!-- preferred contact -->
+      <label>Preferred contact method:</label>
+      <div class="options">
+        <input type="radio" name="contact_method" value="email" required /> Email<br />
+        <input type="radio" name="contact_method" value="phone" /> Phone<br />
+        <input type="radio" name="contact_method" value="either" /> Either is fine
+      </div>
+
+      <!-- email -->
+      <label>Email address:</label>
+      <input type="email" name="email" placeholder="you@example.com" />
+
+      <!-- phone -->
+      <label>Phone number:</label>
+      <input type="tel" name="phone" placeholder="555-123-4567" />
+
+      <button type="submit">Submit e-Referral</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("ereferralForm");
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+
+      /* gather contact data */
+      const fd = new FormData(form);
+      const contact = {};
+      fd.forEach((v, k) => (contact[k] = v));
+
+      /* include prior report if stored */
+      let report = {};
+      try {
+        report = JSON.parse(sessionStorage.getItem("reportJSON") || "{}");
+      } catch (_) {}
+
+      const payload = {
+        ...report,
+        e_referral_contact: contact,
+      };
+
+      try {
+        const res = await fetch(
+          "https://survey211.azurewebsites.net/api/saveereferral",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        if (!res.ok) {
+          alert("Submission failed: " + (await res.text()));
+          return;
+        }
+
+        /* success → simple thank-you page */
+        const w = window.open();
+        w.document.write(`
+          <html>
+            <head>
+              <title>Thank You</title>
+              <style>
+                body{
+                  font-family:Arial,sans-serif;background:#f0f4f8;text-align:center;
+                  padding:100px;color:#2b4c6f;
+                }
+              </style>
+            </head>
+            <body>
+              <h1>Thank you. Your e-referral has been sent.</h1>
+              <p>A community partner will contact you using your preferred method.</p>
+            </body>
+          </html>
+        `);
+        w.document.close();
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    };
+  </script>
+</body>
+</html>
