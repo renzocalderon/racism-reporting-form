@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Racism Reporting Form</title>
   <style>
     body{
-      font-family:Arial,sans-serif;background:#f5f8fa;margin:0;padding:0;
-      display:flex;flex-direction:column;align-items:center;
+      font-family:Arial,sans-serif;background:#f5f8fa;margin:0;
+      padding:0;display:flex;flex-direction:column;align-items:center;
     }
     .container{
       background:#fff;margin:40px auto;padding:30px 40px;border-radius:10px;
@@ -20,54 +20,161 @@
     }
     textarea{resize:vertical;height:80px;}
     .options{margin-left:20px;}
-    /* --- buttons --- */
+    /* buttons */
     .btn{
       display:block;margin:30px auto 0;padding:12px 24px;font-size:16px;
       color:#fff;background:#2b4c6f;border:none;border-radius:8px;cursor:pointer;
       transition:background .2s;
     }
     .btn:hover{background:#3e618c;}
-    /* keep a small gap between the two buttons */
     .btn + .btn{margin-top:15px;}
   </style>
 </head>
 <body>
   <div class="container">
-    <img class="logo"
-         src="https://uwaytbay.ca/wp-content/uploads/2023/02/211-Ontario-Logo-01.png"
-         alt="Ontario 211 Logo">
+    <img
+      class="logo"
+      src="https://uwaytbay.ca/wp-content/uploads/2023/02/211-Ontario-Logo-01.png"
+      alt="Ontario 211 Logo"
+    />
     <h1>Racism Reporting Form</h1>
 
-    <!-- ========== FORM ========== -->
     <form id="reportForm">
-      <!-- … all existing questions unchanged … -->
+      <!-- 1 -->
+      <label>1. Date of incident:
+        <input type="date" name="incident_date" />
+      </label>
 
-      <!-- Follow-up contact (conditional) -->
-      <div id="followUpContact" style="display:none;margin-top:10px;">
-        <label>Phone number (optional):</label>
-        <input type="text" name="follow_up_phone">
-        <label>Email (optional):</label>
-        <input type="text" name="follow_up_email">
+      <!-- 2 -->
+      <label>2. Time of incident:
+        <input type="time" name="incident_time" />
+      </label>
+
+      <!-- 3 -->
+      <label>3. Where did this incident take place?</label>
+      <div class="options">
+        <input type="checkbox" name="incident_location" value="school" /> School<br />
+        <input type="checkbox" name="incident_location" value="work" /> Work<br />
+        <input type="checkbox" name="incident_location" value="public_space" /> Public Space<br />
+        <input type="checkbox" name="incident_location" value="online" /> Online
       </div>
 
-      <!-- Postal code (conditional) -->
-      <div id="postalCodeField" style="display:none;margin-top:10px;">
-        <label>Postal Code (to tailor community resources):</label>
-        <input type="text" name="postal_code">
+      <!-- 4 -->
+      <label>4. How do you identify your racial or ethnic background?</label>
+      <div class="options">
+        <input type="checkbox" name="racial_background" value="east_asian" /> East Asian<br />
+        <input type="checkbox" name="racial_background" value="southeast_asian" /> Southeast Asian<br />
+        <input type="checkbox" name="racial_background" value="mena" /> Middle Eastern or North African<br />
+        <input type="checkbox" name="racial_background" value="latinx" /> Latin American or Hispanic<br />
+        <input type="checkbox" name="racial_background" value="white" /> White (European descent)<br />
+        <input type="checkbox" name="racial_background" value="mixed" /> Mixed race or Multiracial<br />
+        <input type="checkbox" name="racial_background" value="prefer_not_say" /> Prefer not to say
       </div>
 
-      <!-- ========== ACTION BUTTONS ========== -->
-      <button type="submit" id="submitBtn" class="btn">Submit Form</button>
-      <button type="button" id="ereferralBtn" class="btn">Submit e-Referral</button>
+      <!-- 5 -->
+      <label>5. Do you identify as part of an Indigenous group? If other, please specify:</label>
+      <input type="text" name="indigenous_group" />
+
+      <!-- 6 -->
+      <label>6. Do you identify as part of any of the following groups?</label>
+      <div class="options">
+        <input type="checkbox" name="additional_identities" value="lgbtq2s" /> LGBTQ2S+<br />
+        <input type="checkbox" name="additional_identities" value="newcomer" /> Newcomer or immigrant<br />
+        <input type="checkbox" name="additional_identities" value="disability" /> Person with a disability<br />
+        <input type="checkbox" name="additional_identities" value="none" /> None of the above
+      </div>
+
+      <!-- 7 -->
+      <label>7. Location of incident (please specify address or description):</label>
+      <textarea name="incident_address"></textarea>
+
+      <!-- 8 -->
+      <label>8. Type of discrimination</label>
+      <div class="options">
+        <input type="checkbox" name="discrimination_type" value="verbal" /> Verbal Harassment<br />
+        <input type="checkbox" name="discrimination_type" value="physical" /> Physical Assault<br />
+        <input type="checkbox" name="discrimination_type" value="employment" /> Employment Discrimination<br />
+        <input type="checkbox" name="discrimination_type" value="housing" /> Housing Discrimination<br />
+        <input type="checkbox" name="discrimination_type" value="profiling" /> Racial Profiling<br />
+        <input type="checkbox" name="discrimination_type" value="service_denial" /> Service Denial<br />
+        <input type="checkbox" name="discrimination_type" value="hate_speech" /> Hate Speech<br />
+        <input type="checkbox" name="discrimination_type" value="vandalism" /> Vandalism or Property Damage<br />
+        <input type="checkbox" name="discrimination_type" value="other" /> Other
+      </div>
+
+      <!-- 9 -->
+      <label>9. Did you report this incident to another organization or authority?</label>
+      <div class="options">
+        <input type="radio" name="reported_elsewhere" value="yes" /> Yes<br />
+        <input type="radio" name="reported_elsewhere" value="no" /> No
+      </div>
+
+      <label>If yes, please specify:</label>
+      <textarea name="report_details"></textarea>
+
+      <!-- 10 -->
+      <label>10. Can you please provide the details of the incident, in your own words?</label>
+      <textarea name="incident_details"></textarea>
+
+      <!-- 11 -->
+      <label>11. Would you like us to follow up on your case?</label>
+      <div class="options">
+        <input type="radio" name="follow_up" value="yes" /> Yes<br />
+        <input type="radio" name="follow_up" value="no" /> No
+      </div>
+
+      <!-- 12 -->
+      <label>12. How has this incident impacted you?</label>
+      <div class="options">
+        <input type="checkbox" name="impact" value="emotional" /> Emotional distress<br />
+        <input type="checkbox" name="impact" value="fear" /> Fear for safety<br />
+        <input type="checkbox" name="impact" value="job_loss" /> Loss of employment/income<br />
+        <input type="checkbox" name="impact" value="housing_services" /> Disrupted access to housing/services<br />
+        <input type="checkbox" name="impact" value="legal" /> Legal concerns
+      </div>
+
+      <!-- 13 -->
+      <label>13. What kind of support would be most helpful for you?</label>
+      <div class="options">
+        <input type="checkbox" name="support_type" value="mental_health" /> Mental health support<br />
+        <input type="checkbox" name="support_type" value="legal_aid" /> Legal aid/referral<br />
+        <input type="checkbox" name="support_type" value="advocacy" /> Community advocacy or mediation<br />
+        <input type="checkbox" name="support_type" value="employment_help" /> Employment/human rights assistance<br />
+        <input type="checkbox" name="support_type" value="no_support" /> No support needed
+      </div>
+
+      <!-- 14 -->
+      <label>14. Would you like to receive a summary of community resources to support you?</label>
+      <div class="options">
+        <input type="radio" name="resource_summary" value="yes" /> Yes<br />
+        <input type="radio" name="resource_summary" value="no" /> No
+      </div>
+
+      <!-- 15 -->
+      <label>15. Informed Consent</label>
+      <div class="options">
+        <input type="radio" name="consent" value="report_only" /> I consent to my data being included in reports<br />
+        <input type="radio" name="consent" value="refer_only" /> I only consent to refer to support partners<br />
+        <input type="radio" name="consent" value="no_use" /> I do not consent
+      </div>
+
+      <!-- ACTION BUTTONS (both are submit) -->
+      <button type="submit" value="form" class="btn">Submit Form</button>
+      <button type="submit" value="ereferral" class="btn">Submit e-Referral</button>
     </form>
   </div>
 
   <script>
-    /* ---------- existing JS (unchanged) ---------- */
+    /* ---------- form-submission logic ---------- */
     const form = document.getElementById("reportForm");
 
     form.onsubmit = async (e) => {
       e.preventDefault();
+
+      /* which button triggered submit? */
+      const action = e.submitter.value;   // "form" or "ereferral"
+
+      /* gather data */
       const formData = new FormData(form);
       const data = {};
 
@@ -98,14 +205,20 @@
           }
         );
 
-        if (response.ok) {
+        if (!response.ok) {
+          alert("Submission failed: " + (await response.text()));
+          return;
+        }
+
+        if (action === "form") {
+          /* Thank-you window */
           const wantsFollowUp = data["follow_up"] === "yes";
           const message = wantsFollowUp
             ? "Thank you for your participation. A 211 representative will follow up with you shortly."
             : "Thank you for your participation. You can find more information at https://211ontario.ca/";
 
-          const newWindow = window.open();
-          newWindow.document.write(`
+          const w = window.open();
+          w.document.write(`
             <html>
               <head>
                 <title>Thank You</title>
@@ -119,42 +232,22 @@
                 <h1>${message}</h1>
                 ${
                   !wantsFollowUp
-                    ? `<p><a href="https://211ontario.ca/" target="_blank">Visit 211 Ontario</a></p>`
+                    ? '<p><a href="https://211ontario.ca/" target="_blank">Visit 211 Ontario</a></p>'
                     : ""
                 }
               </body>
             </html>
           `);
-          newWindow.document.close();
+          w.document.close();
         } else {
-          alert("Submission failed: " + (await response.text()));
+          /* e-Referral: redirect to next step */
+          // Optionally: sessionStorage.setItem('reportJSON', JSON.stringify(data));
+          window.location.href = "ereferral.html";
         }
       } catch (err) {
         alert("Error: " + err.message);
       }
     };
-
-    /* show/hide follow-up contact fields */
-    document.querySelectorAll('input[name="follow_up"]').forEach((input) => {
-      input.addEventListener("change", () => {
-        document.getElementById("followUpContact").style.display =
-          input.value === "yes" ? "block" : "none";
-      });
-    });
-
-    /* show/hide postal-code field for resource summary */
-    document.querySelectorAll('input[name="resource_summary"]').forEach((input) => {
-      input.addEventListener("change", () => {
-        document.getElementById("postalCodeField").style.display =
-          input.value === "yes" ? "block" : "none";
-      });
-    });
-
-    /* ---------- NEW: e-Referral button ---------- */
-    document.getElementById("ereferralBtn").addEventListener("click", () => {
-      // Later you can collect form data & pass via sessionStorage if needed
-      window.location.href = "ereferral.html";  // placeholder page
-    });
   </script>
 </body>
 </html>
