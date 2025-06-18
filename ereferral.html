@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>E-Referral Contact Details – 211 Ontario Anti-Racism Reporting</title>
+  <title>E-Referral – KF&LA Anti-Racism Reporting</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root{--accent:#0046ad;--text:#1a1a1a;--bg:#ffffff;--radius:.5rem;}
+    :root{--accent:#0046ad;--radius:.5rem;}
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     body{
       font-family:Arial,sans-serif;background:#f5f8fa;line-height:1.55;
@@ -13,7 +13,7 @@
     }
     .container{
       background:#fff;margin:40px auto;padding:30px 40px;border-radius:10px;
-      max-width:600px;width:100%;box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      max-width:600px;width:100%;box-shadow:0 4px 10px rgba(0,0,0,.1);
     }
     h1{text-align:center;color:var(--accent);margin-bottom:30px;font-size:1.75rem;}
     label{display:block;font-weight:bold;margin:20px 0 8px;}
@@ -28,25 +28,34 @@
     }
     button:hover{background:#003a8f;}
   </style>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    //  Initialize EmailJS with your public key
+    window.addEventListener('DOMContentLoaded', () => {
+      emailjs.init('EfdmEbsJzre7RXquc');
+    });
+  </script>
 </head>
 <body>
   <div class="container">
     <h1>Contact Information for e-Referral</h1>
 
     <form id="ereferralForm">
-      <!-- preferred contact -->
+      <!-- Preferred contact -->
       <label>Preferred contact method:</label>
       <div class="options">
-        <input type="radio" name="contact_method" value="email" required /> Email<br />
-        <input type="radio" name="contact_method" value="phone" /> Phone<br />
-        <input type="radio" name="contact_method" value="either" /> Either is fine
+        <input type="radio" name="contact_method" value="Email" required /> Email<br />
+        <input type="radio" name="contact_method" value="Phone" /> Phone<br />
+        <input type="radio" name="contact_method" value="Either" /> Either is fine
       </div>
 
-      <!-- email -->
+      <!-- Email -->
       <label>Email address:</label>
       <input type="email" name="email" placeholder="you@example.com" />
 
-      <!-- phone -->
+      <!-- Phone -->
       <label>Phone number:</label>
       <input type="tel" name="phone" placeholder="555-123-4567" />
 
@@ -55,46 +64,72 @@
   </div>
 
   <script>
-    const form = document.getElementById("ereferralForm");
+    /** Build a plain-text summary for the e-mail body */
+    function buildSummary(report, contact){
+      const out=[];
+      out.push('=== Contact ===');
+      out.push(`Preferred : ${contact.contact_method||'N/A'}`);
+      out.push(`Email     : ${contact.email||'N/A'}`);
+      out.push(`Phone     : ${contact.phone||'N/A'}`);
+      out.push('');
+      out.push('=== Incident ===');
+      if(report.incident_date||report.incident_time){
+        out.push(`Date/Time : ${(report.incident_date||'').trim()} ${(report.incident_time||'').trim()}`.trim());
+      }
+      if(report.incident_location){
+        const loc=Array.isArray(report.incident_location)?report.incident_location.join(', '):report.incident_location;
+        out.push(`Location  : ${loc}`);
+      }
+      if(report.incident_address) out.push(`Address   : ${report.incident_address}`);
+      out.push('');
+      out.push('Details:');
+      out.push(report.incident_details||'(none provided)');
+      out.push('');
+      out.push('-- End of summary --');
+      return out.join('\n');
+    }
 
-    form.onsubmit = (e) => {
+    document.getElementById('ereferralForm').addEventListener('submit', async (e)=>{
       e.preventDefault();
 
-      /* gather contact data */
-      const fd = new FormData(form);
-      const contact = {};
-      fd.forEach((v, k) => (contact[k] = v));
+      /* 1. Collect contact details */
+      const fd=new FormData(e.target);
+      const contact={};
+      fd.forEach((v,k)=>contact[k]=v);
 
-      /* pull prior report if saved earlier (optional) */
-      let report = {};
-      try {
-        report = JSON.parse(sessionStorage.getItem("reportJSON") || "{}");
-      } catch (_) {}
+      /* 2. Retrieve stored report (set in report.html) */
+      let report={};
+      try{ report=JSON.parse(sessionStorage.getItem('reportJSON')||'{}'); }catch{}
 
-      /* 👉 MOCK only: just log to console */
-      console.log("Mock e-Referral payload:", { ...report, e_referral_contact: contact });
+      /* 3. Build template params expected by EmailJS */
+      const tpl={
+        name   : report.respondent_name || 'Anonymous',          // {{name}}
+        time   : new Date().toLocaleString(),                    // {{time}}
+        message: buildSummary(report,contact),                   // {{message}}
+        email  : contact.email || ''                             // {{email}} (for Reply-To if used)
+      };
 
-      /* open a simple thank-you page */
-      const w = window.open();
+      /* 4. Send via EmailJS */
+      try{
+        await emailjs.send('service_6cqtuid','template_buso4ty',tpl);
+      }catch(err){
+        alert('Email send failed: ' + (err.text || err));
+        return;
+      }
+
+      /* 5. Success popup */
+      const w=window.open();
       w.document.write(`
-        <html>
-          <head>
-            <title>Thank You</title>
-            <style>
-              body{
-                font-family:Arial,sans-serif;background:#f0f4f8;text-align:center;
-                padding:100px;color:#2b4c6f;
-              }
-            </style>
-          </head>
-          <body>
-            <h1>Thank you. Your e-referral has been recorded.</h1>
-            <p>A community partner would contact you using your preferred method.</p>
-          </body>
-        </html>
-      `);
+        <html><head><title>Thank You</title>
+        <style>
+          body{font-family:Arial,sans-serif;background:#f0f4f8;text-align:center;
+               padding:100px;color:#2b4c6f;}
+        </style></head><body>
+          <h1>Thank you. Your e-referral has been sent.</h1>
+          <p>A community partner will contact you using your preferred method.</p>
+        </body></html>`);
       w.document.close();
-    };
+    });
   </script>
 </body>
 </html>
