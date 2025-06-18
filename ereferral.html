@@ -28,22 +28,12 @@
     }
     button:hover{background:#003a8f;}
   </style>
-
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    //  Initialize EmailJS with your public key
-    window.addEventListener('DOMContentLoaded', () => {
-      emailjs.init('EfdmEbsJzre7RXquc');
-    });
-  </script>
 </head>
 <body>
   <div class="container">
     <h1>Contact Information for e-Referral</h1>
 
     <form id="ereferralForm">
-      <!-- Preferred contact -->
       <label>Preferred contact method:</label>
       <div class="options">
         <input type="radio" name="contact_method" value="Email" required /> Email<br />
@@ -51,82 +41,69 @@
         <input type="radio" name="contact_method" value="Either" /> Either is fine
       </div>
 
-      <!-- Email -->
       <label>Email address:</label>
       <input type="email" name="email" placeholder="you@example.com" />
 
-      <!-- Phone -->
       <label>Phone number:</label>
       <input type="tel" name="phone" placeholder="555-123-4567" />
 
-      <button type="submit">Submit e-Referral</button>
+      <button type="submit">Submit e-Referral (mock)</button>
     </form>
   </div>
 
   <script>
-    /** Build a plain-text summary for the e-mail body */
-    function buildSummary(report, contact){
-      const out=[];
-      out.push('=== Contact ===');
-      out.push(`Preferred : ${contact.contact_method||'N/A'}`);
-      out.push(`Email     : ${contact.email||'N/A'}`);
-      out.push(`Phone     : ${contact.phone||'N/A'}`);
-      out.push('');
-      out.push('=== Incident ===');
+    /* build plain-text summary */
+    function buildSummary(report, c){
+      const L=[];
+      L.push('=== Contact ===');
+      L.push(`Preferred : ${c.contact_method||'N/A'}`);
+      L.push(`Email     : ${c.email||'N/A'}`);
+      L.push(`Phone     : ${c.phone||'N/A'}`);
+      L.push('');
+      L.push('=== Incident ===');
       if(report.incident_date||report.incident_time){
-        out.push(`Date/Time : ${(report.incident_date||'').trim()} ${(report.incident_time||'').trim()}`.trim());
+        L.push(`Date/Time : ${(report.incident_date||'').trim()} ${(report.incident_time||'').trim()}`.trim());
       }
       if(report.incident_location){
         const loc=Array.isArray(report.incident_location)?report.incident_location.join(', '):report.incident_location;
-        out.push(`Location  : ${loc}`);
+        L.push(`Location  : ${loc}`);
       }
-      if(report.incident_address) out.push(`Address   : ${report.incident_address}`);
-      out.push('');
-      out.push('Details:');
-      out.push(report.incident_details||'(none provided)');
-      out.push('');
-      out.push('-- End of summary --');
-      return out.join('\n');
+      if(report.incident_address) L.push(`Address   : ${report.incident_address}`);
+      L.push('');
+      L.push('Details:');
+      L.push(report.incident_details||'(none provided)');
+      L.push('');
+      L.push('-- End of summary --');
+      return L.join('\n');
     }
 
-    document.getElementById('ereferralForm').addEventListener('submit', async (e)=>{
+    document.getElementById('ereferralForm').addEventListener('submit',async e=>{
       e.preventDefault();
 
-      /* 1. Collect contact details */
+      /* contact info */
       const fd=new FormData(e.target);
-      const contact={};
-      fd.forEach((v,k)=>contact[k]=v);
+      const contact={}; fd.forEach((v,k)=>contact[k]=v);
 
-      /* 2. Retrieve stored report (set in report.html) */
+      /* saved report */
       let report={};
       try{ report=JSON.parse(sessionStorage.getItem('reportJSON')||'{}'); }catch{}
 
-      /* 3. Build template params expected by EmailJS */
-      const tpl={
-        name   : report.respondent_name || 'Anonymous',          // {{name}}
-        time   : new Date().toLocaleString(),                    // {{time}}
-        message: buildSummary(report,contact),                   // {{message}}
-        email  : contact.email || ''                             // {{email}} (for Reply-To if used)
-      };
+      /* SUMMARY that would be emailed */
+      const summary=buildSummary(report,contact);
 
-      /* 4. Send via EmailJS */
-      try{
-        await emailjs.send('service_6cqtuid','template_y4a4c2q',tpl);
-      }catch(err){
-        alert('Email send failed: ' + (err.text || err));
-        return;
-      }
-
-      /* 5. Success popup */
+      /* ---------- MOCK-ONLY: preview the e-mail ---------- */
       const w=window.open();
       w.document.write(`
-        <html><head><title>Thank You</title>
+        <html><head><title>Mock e-mail preview</title>
         <style>
-          body{font-family:Arial,sans-serif;background:#f0f4f8;text-align:center;
-               padding:100px;color:#2b4c6f;}
+          body{font-family:Courier,monospace;background:#fff;padding:30px;color:#333;}
+          pre{white-space:pre-wrap;border:1px solid #ddd;padding:15px;border-radius:6px;background:#fafafa;}
         </style></head><body>
-          <h1>Thank you. Your e-referral has been sent.</h1>
-          <p>A community partner will contact you using your preferred method.</p>
+          <h2>This is a mock preview of the e-mail that would be sent:</h2>
+          <pre>${summary.replace(/</g,'&lt;')}</pre>
+          <p style="margin-top:40px;color:#2b4c6f;">
+            (In production, this content will be sent to Victim Services Kingston.)
+          </p>
         </body></html>`);
       w.document.close();
     });
