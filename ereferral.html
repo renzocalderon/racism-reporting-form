@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>E-Referral – KF&LA Anti-Racism Reporting</title>
+  <title>E-Referral – KF&LA Anti-Racism Reporting (Mock)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{--accent:#0046ad;--radius:.5rem;}
@@ -52,47 +52,67 @@
   </div>
 
   <script>
-    /* build plain-text summary */
+    /* Build a detailed plain-text summary */
     function buildSummary(report, c){
-      const L=[];
-      L.push('=== Contact ===');
-      L.push(`Preferred : ${c.contact_method||'N/A'}`);
-      L.push(`Email     : ${c.email||'N/A'}`);
-      L.push(`Phone     : ${c.phone||'N/A'}`);
-      L.push('');
-      L.push('=== Incident ===');
-      if(report.incident_date||report.incident_time){
-        L.push(`Date/Time : ${(report.incident_date||'').trim()} ${(report.incident_time||'').trim()}`.trim());
+      const line = [];
+
+      // Personal info
+      line.push('=== Reporter ===');
+      line.push(`Name       : ${report.respondent_name || 'Anonymous'}`);
+      line.push(`Age range  : ${report.age_range        || 'N/A'}`);
+      line.push(`Sex/Gender : ${report.sex || report.gender || 'N/A'}`);   // <- will show N/A until you add that field
+      line.push('');
+
+      // Incident core
+      line.push('=== Incident ===');
+      line.push(`Date       : ${report.incident_date || 'N/A'}`);
+      line.push(`Time       : ${report.incident_time || 'N/A'}`);
+
+      // Place
+      const loc = Array.isArray(report.incident_location)
+        ? report.incident_location.join(', ')
+        : (report.incident_location || 'N/A');
+      line.push(`Place      : ${loc}`);
+      if (report.incident_address) line.push(`Address    : ${report.incident_address}`);
+
+      // Relationship
+      if (report.perp_relationship){
+        const rel = Array.isArray(report.perp_relationship)
+          ? report.perp_relationship.join(', ')
+          : report.perp_relationship;
+        line.push(`Relationship: ${rel}`);
       }
-      if(report.incident_location){
-        const loc=Array.isArray(report.incident_location)?report.incident_location.join(', '):report.incident_location;
-        L.push(`Location  : ${loc}`);
+
+      // Impact / feelings
+      if (report.impact){
+        const im = Array.isArray(report.impact) ? report.impact.join(', ') : report.impact;
+        line.push(`Impact     : ${im}`);
       }
-      if(report.incident_address) L.push(`Address   : ${report.incident_address}`);
-      L.push('');
-      L.push('Details:');
-      L.push(report.incident_details||'(none provided)');
-      L.push('');
-      L.push('-- End of summary --');
-      return L.join('\n');
+
+      line.push('');
+      line.push('=== Additional details ===');
+      line.push(report.incident_details || '(none provided)');
+      line.push('');
+      line.push('-- End of summary --');
+      return line.join('\n');
     }
 
-    document.getElementById('ereferralForm').addEventListener('submit',async e=>{
+    document.getElementById('ereferralForm').addEventListener('submit', e=>{
       e.preventDefault();
 
-      /* contact info */
+      // 1. contact
       const fd=new FormData(e.target);
       const contact={}; fd.forEach((v,k)=>contact[k]=v);
 
-      /* saved report */
+      // 2. saved report
       let report={};
-      try{ report=JSON.parse(sessionStorage.getItem('reportJSON')||'{}'); }catch{}
+      try{ report = JSON.parse(sessionStorage.getItem('reportJSON') || '{}'); }catch{}
 
-      /* SUMMARY that would be emailed */
-      const summary=buildSummary(report,contact);
+      // 3. summary
+      const summary = buildSummary(report, contact);
 
-      /* ---------- MOCK-ONLY: preview the e-mail ---------- */
-      const w=window.open();
+      // 4. MOCK preview window
+      const w = window.open();
       w.document.write(`
         <html><head><title>Mock e-mail preview</title>
         <style>
@@ -101,9 +121,7 @@
         </style></head><body>
           <h2>This is a mock preview of the e-mail that would be sent:</h2>
           <pre>${summary.replace(/</g,'&lt;')}</pre>
-          <p style="margin-top:40px;color:#2b4c6f;">
-            (In production, this content will be sent to Victim Services Kingston.)
-          </p>
+          <p style="margin-top:40px;color:#2b4c6f;">(In production, this content will be e-mailed to Victim Services Kingston.)</p>
         </body></html>`);
       w.document.close();
     });
