@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Service Area – KF&LA Anti-Racism Reporting</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- ===== Shared Theme ===== -->
   <style>
     :root{
       --accent:#0046ad; --danger:#b11226; --text:#1a1a1a;
@@ -19,16 +18,25 @@
     header{padding:3rem 0 2rem;text-align:center;}
     header h1{font-size:2.25rem;font-weight:700;color:var(--accent);}
     section{margin:2rem 0;font-size:1.05rem;}
+
+    /* help banner */
     .help-banner{
       background:#ffe9ec;border-left:6px solid var(--danger);
       padding:1rem;border-radius:var(--radius);margin:2rem 0;
     }
-    .help-banner strong{display:block;font-size:1.1rem;margin-bottom:.25rem;}
+    .help-banner strong{display:block;font-size:1.1rem;margin-bottom:.5rem;}
+    .help-banner ul{
+      list-style:disc;
+      margin:0 0 0 1.25rem;
+      padding:0;
+    }
+    .help-banner li{margin:.45rem 0;}
+
     button{
       display:block;margin:2.5rem auto 0;padding:.75rem 2.5rem;
       font-size:1rem;font-weight:600;color:#fff;background:var(--accent);
       border:none;border-radius:var(--radius);cursor:pointer;
-      transition:background .2s ease;
+      transition:background .2s;
     }
     button:hover{background:#003a8f;}
     footer{font-size:.875rem;text-align:center;padding:3rem 0 1rem;color:#666;}
@@ -36,12 +44,12 @@
   </style>
 </head>
 <body>
-  <!-- ===== HEADER ===== -->
+  <!-- HEADER -->
   <header>
     <h1>We’re Sorry</h1>
   </header>
 
-  <!-- ===== MAIN CONTENT ===== -->
+  <!-- MAIN -->
   <main>
     <section>
       <p>
@@ -53,8 +61,10 @@
 
     <section class="help-banner">
       <strong>Need Support Right Now?</strong>
-      Dial <strong>2-1-1</strong> (within Canada) to speak with a trained navigator 24 / 7 who can connect you to
-      local resources. If you feel unsafe or require emergency assistance, call <strong>9-1-1</strong>.
+      <ul>
+        <li>Call <b>9-1-1</b> if you feel unsafe or require police, fire, or ambulance services.</li>
+        <li>Dial <b>2-1-1</b> to speak with a trained navigator who can connect you to non-emergency supports. It’s free, confidential, and available 24/7 in over 170 languages.</li>
+      </ul>
     </section>
 
     <section>
@@ -64,18 +74,15 @@
       </p>
     </section>
 
-    <!-- Return Button -->
     <button onclick="window.location.href='index.html'">Return to Home</button>
   </main>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- FOOTER -->
   <footer>
-    © <span id="year"></span> KF&amp;LA Anti-Racism Reporting Service
+    © <span id="year"></span> 211 Ontario
   </footer>
 
-  <!-- ===== SCRIPT ===== -->
   <script>
-    /* dynamic year */
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
