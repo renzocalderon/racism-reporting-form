@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Report Racism, Hate & Discrimination – KF&LA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- ====== In-page CSS ====== -->
   <style>
     :root{
       --accent:#0046ad; --accent-light:#e7f0ff; --danger:#b11226;
@@ -22,34 +21,36 @@
     section{margin:2rem 0;}
     h2{font-size:1.5rem;margin-bottom:.5rem;color:var(--accent);}
     ul{margin-left:1.25rem;list-style:disc;}
-    /* --- CTA button --- */
-    .cta{
-      margin:3rem 0 2rem;display:flex;justify-content:center;
-    }
+
+    /* CTA button */
+    .cta{margin:3rem 0 2rem;display:flex;justify-content:center;}
     .cta button{
       padding:.75rem 2.5rem;font-size:1rem;font-weight:600;color:#fff;
       background:var(--accent);border:none;border-radius:var(--radius);
-      cursor:pointer;transition:background .2s ease;
+      cursor:pointer;transition:background .2s;
     }
     .cta button:hover{background:#003a8f;}
-    /* --- help banner --- */
+
+    /* Help banner */
     .help-banner{
       background:#ffe9ec;border-left:6px solid var(--danger);
       padding:1rem;border-radius:var(--radius);margin-top:1rem;
     }
-    .help-banner strong{display:block;font-size:1.1rem;margin-bottom:.25rem;}
+    .help-banner strong{display:block;font-size:1.1rem;margin-bottom:.5rem;}
+    .help-banner p{margin:.4rem 0;}   /* NEW – adds spacing between lines */
+
     footer{font-size:.875rem;text-align:center;padding:3rem 0 1rem;color:#666;}
     @media(min-width:600px){header h1{font-size:2.75rem;}}
   </style>
 </head>
 <body>
-  <!-- ====== HEADER ====== -->
+  <!-- HEADER -->
   <header>
     <h1>Have you experienced or witnessed racism, hate, or discrimination?</h1>
     <p class="lead">We’re here to listen. Your experience matters.</p>
   </header>
 
-  <!-- ====== INTRO ====== -->
+  <!-- INTRO -->
   <main>
     <section>
       <p>
@@ -79,33 +80,29 @@
       </p>
     </section>
 
-    <!-- ====== NEXT BUTTON ====== -->
+    <!-- NEXT BUTTON -->
     <div class="cta">
       <button id="nextBtn">Next</button>
     </div>
 
-    <!-- URGENT HELP -->
+    <!-- HELP BANNER (updated) -->
     <section class="help-banner">
       <strong>Need Immediate Help?</strong>
-      If you are in danger, call <strong>9-1-1</strong> right away.  
-      For non-emergency supports, dial <strong>2-1-1</strong> 24/7 to speak with a trained navigator.
+      <p>Call <strong>9-1-1</strong> if you are in danger and require police, fire, or ambulance services.</p>
+      <p>Dial <strong>2-1-1</strong> to speak with a trained navigator who can connect you to non-emergency supports. It’s free, confidential, and available 24/7 in over 170 languages.</p>
     </section>
   </main>
 
-  <!-- ====== FOOTER ====== -->
+  <!-- FOOTER -->
   <footer>
     © <span id="year"></span> 211 Ontario
   </footer>
 
-  <!-- ====== SCRIPT ====== -->
+  <!-- SCRIPT -->
   <script>
-    /* current year */
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    /* simple redirect */
     document.getElementById('nextBtn').addEventListener('click', () => {
-      // change 'postal.html' to whatever your next step/page is
-      window.location.href = 'postal.html';
+      window.location.href = 'postal.html';  // adjust as needed
     });
   </script>
 </body>
