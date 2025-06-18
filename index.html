@@ -41,6 +41,14 @@
 
     footer{font-size:.875rem;text-align:center;padding:3rem 0 1rem;color:#666;}
     @media(min-width:600px){header h1{font-size:2.75rem;}}
+
+    /* keep bullets left-aligned & remove default ul spacing */
+    .help-banner ul{
+      list-style:disc;
+      margin:0 0 0 1.25rem;
+      padding:0;
+    }
+    .help-banner li{margin:.45rem 0;}
   </style>
 </head>
 <body>
@@ -88,8 +96,10 @@
     <!-- HELP BANNER (updated) -->
     <section class="help-banner">
       <strong>Need Immediate Help?</strong>
-      <p>Call <strong>9-1-1</strong> if you are in danger and require police, fire, or ambulance services.</p>
-      <p>Dial <strong>2-1-1</strong> to speak with a trained navigator who can connect you to non-emergency supports. It’s free, confidential, and available 24/7 in over 170 languages.</p>
+      <ul>
+        <li>Call <strong>9-1-1</strong> if you are in danger and require police, fire, or ambulance services.</li>
+        <li>Dial <strong>2-1-1</strong> to speak with a trained navigator who can connect you to non-emergency supports. It’s free, confidential, and available 24/7 in over 170 languages.</li>
+      </ul>
     </section>
   </main>
 
